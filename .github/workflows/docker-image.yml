@@ -27,8 +27,8 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker build . --file Dockerfile --tag ghcr.io/MozComputing/better-call-reward:${{ github.ref_name }}
-          docker build . --file Dockerfile --tag ghcr.io/MozComputing/better-call-reward:latest
-          docker push ghcr.io/MozComputing/better-call-reward:${{ github.ref_name }}
-          docker push ghcr.io/MozComputing/better-call-reward:latest
+          docker build . --file Dockerfile --tag ghcr.io/mozcomputing/better-call-reward:${{ github.ref_name }}
+          docker build . --file Dockerfile --tag ghcr.io/mozcomputing/better-call-reward:latest
+          docker push ghcr.io/mozcomputing/better-call-reward:${{ github.ref_name }}
+          docker push ghcr.io/mozcomputing/better-call-reward:latest
           
