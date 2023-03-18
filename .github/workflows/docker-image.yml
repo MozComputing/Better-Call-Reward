@@ -4,16 +4,16 @@ on:
   push:
     branches: 
       - master
-  pull_request:
-    branches: 
-      - master
+    tags:  
+      - v*
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout GitHub Action
         uses: actions/checkout@main
@@ -25,10 +25,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata for the Docker image
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
       - name: Build the Docker image
         run: |
-          docker build . --file Dockerfile --tag ghcr.io/mozcomputing/better-call-reward:${{ github.ref_name }}
+          docker build . --file Dockerfile --tag ghcr.io/mozcomputing/better-call-reward:${{ steps.meta.outputs.labels }}
           docker build . --file Dockerfile --tag ghcr.io/mozcomputing/better-call-reward:latest
-          docker push ghcr.io/mozcomputing/better-call-reward:${{ github.ref_name }}
+          docker push ghcr.io/mozcomputing/better-call-reward:${{ steps.meta.outputs.labels }}
           docker push ghcr.io/mozcomputing/better-call-reward:latest
           
